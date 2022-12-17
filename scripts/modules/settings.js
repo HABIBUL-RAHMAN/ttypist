@@ -4,7 +4,7 @@ import * as Elements from "./elements.js";
 import * as Constants from "./constants.js"
 import { time, history, sentence } from "./test.js";
 
-function changeCaret(evt) {
+function updateCaretType(evt) {
   evt.preventDefault();
 
   let clickedcaret = this;
@@ -27,10 +27,9 @@ function changeCaret(evt) {
     clickedcaret.style.backgroundColor = "var(--settings-caret__bg-active)";
   }
 
-  let lastcaret = Config.caret; // previous caret type
+  const lastcaret = Config.caret; // previous caret type
 
   Config.caret = clickedcaret.title; // current caret type
-
 
   Array.from(document.getElementsByTagName("letter")).forEach(function (letter) {
     letter.classList.remove(Constants.carettypes[lastcaret]);
@@ -41,15 +40,13 @@ function changeCaret(evt) {
 
     Elements.inputbox.focus();
   });
-
-  // test.start();
 }
 
-Elements.offtype.addEventListener      ("click", changeCaret);
-Elements.boxtype.addEventListener      ("click", changeCaret);
-Elements.linetype.addEventListener     ("click", changeCaret);
-Elements.blocktype.addEventListener    ("click", changeCaret);
-Elements.underlinetype.addEventListener("click", changeCaret);
+Elements.offtype.addEventListener      ("click", updateCaretType);
+Elements.boxtype.addEventListener      ("click", updateCaretType);
+Elements.linetype.addEventListener     ("click", updateCaretType);
+Elements.blocktype.addEventListener    ("click", updateCaretType);
+Elements.underlinetype.addEventListener("click", updateCaretType);
 
 Elements.inputbox.addEventListener("focus",     (evt) => { evt.preventDefault(); Config.typing = true;  });
 Elements.inputbox.addEventListener("focusout",  (evt) => { evt.preventDefault(); Config.typing = false; });
