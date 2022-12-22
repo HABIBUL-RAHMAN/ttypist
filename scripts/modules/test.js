@@ -12,6 +12,9 @@ let time = new Time();
 let history = new History();
 let sentence = new Sentence();
 
+let firsttimeerror = true;
+let tmp, previousErrorElement;
+
 function handlekeydown(evt) {
   evt.preventDefault();
 
@@ -33,6 +36,8 @@ function handlekeydown(evt) {
     Caret.addCaretTo(sentence.activeLetter);
     
   } else if (typedkey === sentence.activeLetterValue) {
+    
+    firsttimeerror = true;
     
     sentence.activeWord.classList.remove('error');
     Caret.goToNextLetter(sentence);
@@ -102,13 +107,45 @@ function handlekeydown(evt) {
     }
     
   } else {
-    
-    // insert '·' this instead of &nbsp; when user hits space character in the wrong place
-    // <span style="padding: 0px 4px;">⸱</span>
+
     if (!Constants.invisibles.includes(typedkey)) {
-      sentence.activeWord.classList.add("error");
+
+      // this ensures that sentence object returns correct activeLetter
+      
+      if ( firsttimeerror ) {
+        sentence.activeWord.classList.add("error");
+        previousErrorElement = errorletter(typedkey);
+        sentence.activeLetter.insertAdjacentElement('beforebegin', previousErrorElement);
+        firsttimeerror = false;
+      } else {
+        tmp = errorletter(typedkey);
+        previousErrorElement.insertAdjacentElement('afterend', tmp);
+        previousErrorElement = tmp;
+      }
+
+      sentence.incrementLetterIndex();
     }
   }
+}
+
+// 1. first error letter will be inserted before the letter which the user was
+//    typing
+// 2. after that error letter will be added after previous error letter
+
+function errorletter(typedkey) {
+
+  let letter = document.createElement('letter');
+
+  letter.classList.add(Constants.carettypes[Config.caret]);
+  letter.classList.add("extra");
+
+  if ( typedkey == ' ' ) {
+    letter.innerHTML = `<span style="padding: 0px 3px;">⸱</span>`;
+  } else {
+    letter.textContent = typedkey;
+  }
+  
+  return letter;
 }
 
 class Test {

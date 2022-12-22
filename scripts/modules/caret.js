@@ -23,9 +23,24 @@ function goToNextLetter(sentence) {
 }
 
 function goToPreviousLetter(sentence) {
-	removeCaretFrom(sentence.activeLetter);
-	sentence.decrementLetterIndex();
-	addCaretTo(sentence.activeLetter);
+
+	let isExtra = false;
+
+	if ( sentence.activeLetterIndex > 0 ) {
+		sentence.decrementLetterIndex();
+		isExtra = sentence.activeLetter.classList.contains('extra');
+		if ( isExtra ) {
+			sentence.activeLetter.remove();
+		} else {
+			sentence.incrementLetterIndex();
+		}
+	}
+
+	if ( !isExtra ) {
+		removeCaretFrom(sentence.activeLetter);
+		sentence.decrementLetterIndex();
+		addCaretTo(sentence.activeLetter);
+	}
 }
 
 function goToNextWord(sentence) {

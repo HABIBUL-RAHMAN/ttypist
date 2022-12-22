@@ -45,7 +45,9 @@ body {
 .error {
   color: red;
 }
-
+.extra {
+  color: #ff9090;
+}
 .ttypist {
   max-width: 800px;
   margin-left: 30px;

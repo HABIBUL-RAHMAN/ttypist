@@ -15,4 +15,4 @@ export { test };
  * 	> after that work on stats object integration
  * 	> then make core test configuration options like deletion/inserterror/instantdeath
  * 		forgiveerror etc work together & in harmony
- **/ 
+ **/
